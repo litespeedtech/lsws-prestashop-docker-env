@@ -34,10 +34,10 @@ The docker image installs the following packages on your system:
 | :-------------: | :-------------: |
 |Linux|Ubuntu 24.04|
 |LiteSpeed|[Latest version](https://www.litespeedtech.com/products/litespeed-web-server/download)|
-|MariaDB|[Stable version: 10.5](https://hub.docker.com/_/mariadb)|
+|MariaDB|[Stable version: 11.4](https://hub.docker.com/_/mariadb)|
 |PHP|[Latest PrestaShop supported version](http://rpms.litespeedtech.com/debian/)|
 |ACME|[Latest from ACME official](https://github.com/acmesh-official/get.acme.sh)|
-|PrestaShop|[8.1.7](https://www.prestashop.com/en/versions)|
+|PrestaShop|[Latest Stable](https://www.prestashop.com/en/versions)|
 |LSCache|[Latest version](hhttps://www.litespeedtech.com/products/cache-plugins/prestashop-acceleration/download)|
 |phpMyAdmin|[Latest from dockerhub](https://hub.docker.com/r/bitnami/phpmyadmin/)|
 

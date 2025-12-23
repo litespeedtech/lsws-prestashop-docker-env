@@ -54,7 +54,7 @@ help_message(){
             echow 'Service finished, enjoy your accelarated LiteSpeed server!'
         ;;
         "3")
-            echo 'To improve the page speed, please follow https://docs.litespeedtech.com/lscache/lscps/installation/ to install the LSCPS plugin!'
+            echo 'To improve the page speed, please follow https://docs.litespeedtech.com/lscache/lscps/installation/ to enable LSCPS plugin!'
         ;;		
     esac  
 }
@@ -790,7 +790,8 @@ install_prestashop(){
 install_ps_cache(){
     echoG '[Start] Install PrestaShop LSCache'
     wget -q https://www.litespeedtech.com/packages/prestashop/bk/litespeedcache.zip
-    ./bin/console prestashop:module install litespeedcache.zip
+	unzip -q litespeedcache.zip -d modules/
+    ./bin/console prestashop:module install litespeedcache
     echoG '[End] PrestaShop LSCach install'
 }    
 
@@ -844,26 +845,10 @@ main(){
 		set_lscache
 		change_owner
 		exit 0
-	#elif [ "${APP}" = 'magento' ] || [ "${APP}" = 'M' ]; then
-	    #prevent_php
-		#check_memory
-		#check_composer
-		#check_git
-		#app_magento_dl
-		#install_magento
-		#install_litemage
-		#config_ma_htaccess
-        #config_litemage
-		#install_ma_sample
-		#change_owner
-		#show_access
-		#store_access
-		#exit 0	
 	elif [ "${APP}" = 'prestashop' ] || [ "${APP}" = 'P' ]; then
-	    #prevent_php
 		check_sql_native
         install_prestashop
-		#install_ps_cache
+		install_ps_cache
 		help_message 3
 		change_owner
 		show_access

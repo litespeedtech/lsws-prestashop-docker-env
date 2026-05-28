@@ -27,6 +27,13 @@ check_input(){
     fi
 }
 
+validate_domain(){
+    if ! echo "${1}" | grep -Eq '^(localhost|([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})$'; then
+        echo "[X] Invalid domain name: '${1}'. Abort!"
+        exit 1
+    fi
+}
+
 set_phpmemory(){
     if [ "${1}" = 'magento' ]; then 
         PHP_INI=$(docker compose exec -T litespeed su -c "php -i | grep 'Loaded Configuration File' | cut -d' ' -f5 " | tr -d '\r')
@@ -54,6 +61,7 @@ install_packages(){
 }
 
 app_download(){
+    validate_domain ${2}
     set_phpmemory ${1}
     install_packages ${1}
     docker compose exec -T litespeed bash -c "appinstallctl.sh --app ${1} --domain ${2} ${3}"

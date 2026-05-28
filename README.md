@@ -4,7 +4,7 @@
 [<img src="https://img.shields.io/badge/slack-LiteSpeed-blue.svg?logo=slack">](litespeedtech.com/slack) 
 [<img src="https://img.shields.io/twitter/follow/litespeedtech.svg?label=Follow&style=social">](https://twitter.com/litespeedtech)
 
-Install a PrestaShop container with LiteSpeed stable version based on Ubuntu 22.04 Linux.
+Install a PrestaShop container with LiteSpeed stable version based on Ubuntu 26.04 Linux.
 
 ### Prerequisites
 1. [Install Docker](https://www.docker.com/)
@@ -32,9 +32,9 @@ The docker image installs the following packages on your system:
 
 |Component|Version|
 | :-------------: | :-------------: |
-|Linux|Ubuntu 24.04|
+|Linux|Ubuntu 26.04|
 |LiteSpeed|[Latest version](https://www.litespeedtech.com/products/litespeed-web-server/download)|
-|MariaDB|[Stable version: 11.4](https://hub.docker.com/_/mariadb)|
+|MariaDB|[Latest Stable](https://hub.docker.com/_/mariadb)|
 |PHP|[Latest PrestaShop supported version](http://rpms.litespeedtech.com/debian/)|
 |ACME|[Latest from ACME official](https://github.com/acmesh-official/get.acme.sh)|
 |PrestaShop|[Latest Stable](https://www.prestashop.com/en/versions)|

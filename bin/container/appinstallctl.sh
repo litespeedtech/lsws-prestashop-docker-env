@@ -13,7 +13,9 @@ THEME='twentytwenty'
 LSDIR='/usr/local/lsws'
 MA_COMPOSER='/usr/local/bin/composer'
 MA_VER='2.4.2'
-PS_VER='8.2.3'
+PS_VER='8.2.6'
+LSCVER=1.6.0
+LSCVER_SHORT=${LSCVER//./}
 EMAIL='test@example.com'
 PS_BACK_URL=''
 APP_ACCT=''
@@ -62,6 +64,13 @@ help_message(){
 check_input(){
     if [ -z "${1}" ]; then
         help_message 1
+        exit 1
+    fi
+}
+
+validate_domain(){
+    if ! echo "${1}" | grep -Eq '^(localhost|([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})$'; then
+        echo "[X] Invalid domain name: '${1}'. Abort!"
         exit 1
     fi
 }
@@ -161,7 +170,7 @@ set_vh_docroot(){
 check_sql_native(){
 	local COUNTER=0
 	local LIMIT_NUM=100
-	until [ "$(curl -v mysql:3306 2>&1 | grep -i 'native\|Connected')" ]; do
+	until [ "$(curl -v mysql:3306 2>&1 | grep -i 'native\|Connected\|Established')" ]; do
 		echo "Counter: ${COUNTER}/${LIMIT_NUM}"
 		COUNTER=$((COUNTER+1))
 		if [ ${COUNTER} = 10 ]; then
@@ -789,14 +798,21 @@ install_prestashop(){
 
 install_ps_cache(){
     echoG '[Start] Install PrestaShop LSCache'
-    wget -q https://www.litespeedtech.com/packages/prestashop/bk/litespeedcache.zip
-	unzip -q litespeedcache.zip -d modules/
+    wget -q -O litespeedcache.zip https://github.com/litespeedtech/lscache_prestashop/releases/download/v${LSCVER}/litespeedcache-prestashop-${LSCVER_SHORT}.zip
+    unzip -q litespeedcache.zip -d modules/
     ./bin/console prestashop:module install litespeedcache
     echoG '[End] PrestaShop LSCach install'
 }    
 
 change_owner(){
 	    chown -R ${WWW_UID}:${WWW_GID} ${DEFAULT_VH_ROOT}/${DOMAIN}
+}
+
+check_php_session(){
+	if [ ! -d /var/lib/php/sessions ]; then
+	    mkdir /var/lib/php/sessions
+		chown -R ${WWW_UID}:${WWW_GID} /var/lib/php/sessions
+	fi
 }
 
 store_access(){
@@ -873,6 +889,7 @@ while [ ! -z "${1}" ]; do
 			;;
 		-[dD] | -domain | --domain) shift
 			check_input "${1}"
+			validate_domain "${1}"
 			DOMAIN="${1}"
 			;;
 		-[sS] | --sample)

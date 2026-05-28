@@ -1,7 +1,7 @@
 services:
   mysql:
-    image: mariadb:11.4
-    command: --max_allowed_packet=256M --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    image: mariadb:11.8
+    command: ["--max-allowed-packet=512M"]
     volumes:
       - "./data/db:/var/lib/mysql:delegated"
     environment:
@@ -35,10 +35,12 @@ services:
       - default      
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:${PHPMYADMIN_VERSION}
-    ports:
-      - 8080:80
+    env_file:
+      - .env
+    #ports:
+      #- 8080:80
     environment:
-        DATABASE_HOST: mysql
+      PMA_HOST: mysql
     restart: always
     networks:
       - default

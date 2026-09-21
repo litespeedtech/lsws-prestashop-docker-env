@@ -13,7 +13,8 @@ THEME='twentytwenty'
 LSDIR='/usr/local/lsws'
 MA_COMPOSER='/usr/local/bin/composer'
 MA_VER='2.4.2'
-PS_VER='8.2.8'
+PS_VER='9.1.5-5.0'
+#PS_VER='8.2.8'
 LSCVER=1.6.0
 LSCVER_SHORT=${LSCVER//./}
 EMAIL='test@example.com'
@@ -46,7 +47,7 @@ help_message(){
     case ${1} in
         "1")   	
 			echo -e "\033[1mOPTIONS\033[0m"
-			echow '-A, -app [wordpress|prestashop] -D, --domain [DOMAIN_NAME]'
+			echow '-A, -app [prestashop] -D, --domain [DOMAIN_NAME]'
 			echo "${EPACE}${EPACE}Example: appinstallctl.sh --app prestashop --domain example.com"
 			echow '-H, --help'
 			echo "${EPACE}${EPACE}Display help and exit."
@@ -775,7 +776,8 @@ install_prestashop(){
     if [ ${app_skip} = 0 ]; then
         echoG 'Install Prestashop...'
 		get_db_pass ${DOMAIN}
-        wget -q https://github.com/PrestaShop/PrestaShop/releases/download/${PS_VER}/prestashop_${PS_VER}.zip
+        #wget -q https://github.com/PrestaShop/PrestaShop/releases/download/${PS_VER}/prestashop_${PS_VER}.zip
+		wget -q https://github.com/PrestaShopCorp/prestashop-classic/releases/download/${PS_VER}/prestashop_${PS_VER}.zip
         unzip -q prestashop_${PS_VER}.zip; mv index.php /tmp/
         unzip -q prestashop.zip
         php install/index_cli.php \
@@ -792,7 +794,9 @@ install_prestashop(){
 	    mv admin ${PS_BACK_URL}
     else 
 	    echoY 'admin folder not found!'
-	    PS_BACK_URL='admin'
+	    #PS_BACK_URL='admin'
+		PS_BACK_URL=$(find . -maxdepth 1 -type d -name 'admin*' -printf '%f\n' |
+          grep -E '^admin[a-z0-9]+$' | head -n 1)
     fi	
 }    
 
